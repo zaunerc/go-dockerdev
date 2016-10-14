@@ -1,0 +1,2 @@
+Defaults env_keep = "http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy NO_PROXY"
+
