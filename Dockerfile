@@ -8,16 +8,17 @@ MAINTAINER Christoph Zauner <christoph.zauner@nllk.net>
 #
 
 ENV NO_PROXY_LIST="" \
-    PROXY_URL="" \
-    PROXY_PORT=""
+    PROXY=""
 
-ENV http_proxy=$PROXY_URL:$PROXY_PORT \
-    HTTP_PROXY=$PROXY_URL:$PROXY_PORT \
-    https_proxy=$PROXY_URL:$PROXY_PORT \
-    HTTPS_PROXY=$PROXY_URL:$PROXY_PORT
+RUN if [ -n "$VAR" ]; then echo "---> SETTING PROXY VARS" \
+    && export http_proxy=$PROXY \
+    && export HTTP_PROXY=$PROXY \
+    && export https_proxy=$PROXY \
+    && export HTTPS_PROXY=$PROXY; \
+	else echo "---> NOT SETTING PROXY VARS"; fi
 
-ENV no_proxy=$NO_PROXY_LIST \
-    NO_PROXY=$NO_PROXY_LIST
+#ENV no_proxy=$NO_PROXY_LIST \
+#    NO_PROXY=$NO_PROXY_LIST
 
 #
 #
@@ -72,7 +73,7 @@ ENV CNTRINFOD_VERSION=0.2.6
 
 # Beware when updating the link! The filename is just cosmetic. The ID
 # in front of the filename actually decides which content will be downloaded!
-RUN wget --no-check-certificate -P /tmp https://github.com/zaunerc/cntrinfod/releases/download/v${CNTRINFOD_VERSION}/cntrinfod-v${CNTRINFOD_VERSION}-x64-libmusl.tar.gz \
+RUN wget -nv --no-check-certificate -P /tmp https://github.com/zaunerc/cntrinfod/releases/download/v${CNTRINFOD_VERSION}/cntrinfod-v${CNTRINFOD_VERSION}-x64-libmusl.tar.gz \
     && tar -C / -v -xzf /tmp/cntrinfod-v${CNTRINFOD_VERSION}-x64-libmusl.tar.gz
 
 #
@@ -122,7 +123,7 @@ ENV CNTRBROWSERD_VERSION=0.2.1
 
 # Beware when updating the link! The filename is just cosmetic. The ID
 # in front of the filename actually decides which content will be downloaded!
-RUN wget --no-check-certificate -P /tmp https://github.com/zaunerc/cntrbrowserd/releases/download/v${CNTRBROWSERD_VERSION}/cntrbrowserd-v${CNTRBROWSERD_VERSION}-x64-libmusl.tar.gz \
+RUN wget -nv --no-check-certificate -P /tmp https://github.com/zaunerc/cntrbrowserd/releases/download/v${CNTRBROWSERD_VERSION}/cntrbrowserd-v${CNTRBROWSERD_VERSION}-x64-libmusl.tar.gz \
     && tar -C / -v -xzf /tmp/cntrbrowserd-v${CNTRBROWSERD_VERSION}-x64-libmusl.tar.gz
 
 #
@@ -151,8 +152,8 @@ RUN apk add --no-cache ca-certificates gnupg && \
     mkdir -p /tmp/build && \
     cd /tmp/build && \
     # download
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip && \
-    wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS && \
+    wget -nv https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip && \
+    wget -nv https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS && \
     #wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_SHA256SUMS.sig && \
     # verify
     #gpg --batch --verify consul_${CONSUL_VERSION}_SHA256SUMS.sig consul_${CONSUL_VERSION}_SHA256SUMS && \
@@ -221,5 +222,5 @@ RUN mkdir ~/repos \
 #
 EXPOSE 22 80 2020 8500 9001 
 
-CMD ["supervisord]
+CMD ["supervisord"]
 
