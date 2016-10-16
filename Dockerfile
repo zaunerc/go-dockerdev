@@ -222,5 +222,6 @@ RUN mkdir ~/repos \
 #
 EXPOSE 22 80 2020 8500 9001 
 
+USER root
 CMD ["supervisord"]
 
