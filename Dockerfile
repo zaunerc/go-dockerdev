@@ -102,10 +102,10 @@ RUN addgroup $GROUP_ADMIN \
     && addgroup $GROUP_ADMIN wheel \
     && echo "$USER_ADMIN:$PASSWORD_ADMIN" | chpasswd
 
-RUN sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers \
+RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers \
     # Check if substitution was successfull. grep will return a non-zero exit
     # code if there is no match.
-    && grep '%wheel ALL=(ALL) ALL' /etc/sudoers 
+    && grep '%wheel ALL=(ALL) NOPASSWD: ALL' /etc/sudoers
 
 COPY files/etc/sudoers.d/env_keep /etc/sudoers.d/env_keep
 
@@ -208,6 +208,13 @@ RUN mkdir ~/repos \
     && cd ~/repos \
     && git clone https://github.com/zaunerc/go-scripts.git \
     && git clone https://github.com/zaunerc/configs.git
+
+# Requires sudo
+RUN ~/repos/configs/install.sh
+
+# Molokai theme causes error when vim is first run.
+# Therefore script is disabled currently.
+#RUN ~/repos/go-scripts/dev-setup-scripts/alpine.sh
 
 #
 #
