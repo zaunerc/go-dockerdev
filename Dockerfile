@@ -86,9 +86,8 @@ RUN wget -nv --no-check-certificate -P /tmp https://github.com/zaunerc/cntrinfod
 #
 #
 
-ENV USER_ADMIN=chris \
-    GROUP_ADMIN=chris \
-    PASSWORD_ADMIN=password
+ENV USER_ADMIN=gopher
+ENV GROUP_ADMIN=$USER_ADMIN
 
 RUN set -x \
     && apk add --update --no-cache \
@@ -100,7 +99,7 @@ RUN ssh-keygen -A
 RUN addgroup $GROUP_ADMIN \
     && adduser -D -h /home/$USER_ADMIN -g "sudo admin" -s /bin/bash -G ${GROUP_ADMIN} ${USER_ADMIN} \
     && addgroup $GROUP_ADMIN wheel \
-    && echo "$USER_ADMIN:$PASSWORD_ADMIN" | chpasswd
+    && head /dev/urandom | tr -dc A-Za-z0-9 | head -c12 | sed "s/\(.*\)/$USER_ADMIN:\1/" | chpasswd
 
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers \
     # Check if substitution was successfull. grep will return a non-zero exit
