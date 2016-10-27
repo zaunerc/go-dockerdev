@@ -214,6 +214,14 @@ RUN ~/repos/configs/install.sh
 # Requires sudo
 RUN ~/repos/go-scripts/dev-setup-scripts/alpine.sh
 
+RUN git config --global user.email "christoph.zauner@NLLK.net" \
+    && git config --global user.name "Christoph Zauner"
+
+ENV GOPATH=/home/$USER_ADMIN/gowork
+
+RUN go get github.com/zaunerc/cntrbrowserd \
+    && go get github.com/zaunerc/cntrinfod
+
 #
 #
 ############################################################
