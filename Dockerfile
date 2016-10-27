@@ -211,9 +211,8 @@ RUN mkdir ~/repos \
 # Requires sudo
 RUN ~/repos/configs/install.sh
 
-# Molokai theme causes error when vim is first run.
-# Therefore script is disabled currently.
-#RUN ~/repos/go-scripts/dev-setup-scripts/alpine.sh
+# Requires sudo
+RUN ~/repos/go-scripts/dev-setup-scripts/alpine.sh
 
 #
 #
