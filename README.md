@@ -17,3 +17,12 @@ The following Go projects are checked out (see Dockerfile):
   * Using `go get`.
 * github.com/zaunerc/cntrinfod
   * Using `go get`.
+
+# Usage
+
+1. Run `$ sudo ./build.sh` to build the container.
+1. Run `$ sudo ./run.sh` to run the container.
+1. Follow the instructions printed out to the
+   console about how to connect to the container.
+1. Use the tools and editors inside the container
+   to develop your golang program.
